@@ -1,22 +1,22 @@
 import { useSelector } from 'react-redux'
-import { selectCurrencyInfo } from '../slices/appSettingsSlice'
+import { selectCurrency, formatCurrency } from '../slices/appSettingsSlice'
 
+/** Returns a `formatPrice(amountInBDT)` function bound to the selected currency. */
 export function useFormatPrice() {
-  const info = useSelector(selectCurrencyInfo)
-
-  return (usdAmount) => {
-    const converted = Number(usdAmount) * info.rate
-    const formatted = converted.toFixed(2)
-    return `${info.symbol}${formatted}`
-  }
+  const currency = useSelector(selectCurrency)
+  return (amount) => formatCurrency(amount, currency)
 }
 
+/** Same as above but also exposes the raw numeric value, symbol and code. */
 export function useFormatPriceWithSymbol() {
-  const info = useSelector(selectCurrencyInfo)
-
-  return (usdAmount) => {
-    const converted = Number(usdAmount) * info.rate
-    const formatted = converted.toFixed(2)
-    return { formatted, symbol: info.symbol, code: info.code, value: converted }
+  const currency = useSelector(selectCurrency)
+  return (amount) => {
+    const formatted = formatCurrency(amount, currency)
+    return {
+      formatted,
+      code: currency,
+      symbol: formatted.replace(/[\d.,]/g, ''),
+      value: Number(amount) * (currency === 'USD' ? 1 / 119.5 : 1),
+    }
   }
 }

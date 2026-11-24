@@ -5,8 +5,8 @@ import Container from '../components/layout/Container'
 import { removeFromCart, updateQty, selectCartItems, selectCartTotal } from '../slices/cartSlice'
 import { useFormatPrice } from '../hooks/useFormatPrice'
 import { useTranslation } from '../hooks/useTranslation'
-import { selectCurrencyInfo } from '../slices/appSettingsSlice'
 import { resolveProductImage } from '../utils/productImage'
+import { site } from '../config/site'
 
 const Cart = () => {
   const dispatch = useDispatch()
@@ -14,16 +14,21 @@ const Cart = () => {
   const { t } = useTranslation()
   const items = useSelector(selectCartItems)
   const total = useSelector(selectCartTotal)
-  const currencyInfo = useSelector(selectCurrencyInfo)
-  const shippingUSD = total > 5 ? 0 : 2.99
-  const totalUSD = total + shippingUSD
+  const shipping = total >= site.shipping.freeThreshold ? 0 : site.shipping.flatRate
+  const grandTotal = total + shipping
 
   if (items.length === 0) {
     return (
       <Container className="py-20 text-center">
-        <h1 className="font-pop text-2xl font-bold mb-4">{t('yourCart')} {t('empty').toLowerCase()}</h1>
-        <p className="font-pop text-gray-500 mb-8">{t('yourCart')}: {formatPrice(0)} — Add some products to get started.</p>
-        <Link to="/shop" className="bg-primary text-white px-8 py-3 rounded-full font-pop text-sm">
+        <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-gry flex items-center justify-center text-primary">
+          <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <circle cx="9" cy="21" r="1" /><circle cx="20" cy="21" r="1" />
+            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
+          </svg>
+        </div>
+        <h1 className="font-pop text-2xl font-bold mb-3">{t('yourCart')} is {t('empty').toLowerCase()}</h1>
+        <p className="font-pop text-gray-500 mb-8">Add products to your cart and they will appear here.</p>
+        <Link to="/shop" className="inline-block bg-primary text-white px-8 py-3 rounded-full font-pop text-sm font-semibold hover:bg-primary-dark transition-colors">
           {t('shopNow')}
         </Link>
       </Container>
@@ -32,7 +37,7 @@ const Cart = () => {
 
   return (
     <Container className="py-12">
-      <h1 className="font-pop text-2xl font-bold mb-8">{t('shoppingCart')} <span className="text-primary text-base font-normal ml-2">({currencyInfo.code})</span></h1>
+      <h1 className="font-pop text-2xl font-bold mb-8">{t('shoppingCart')}</h1>
       <div className="flex flex-col lg:flex-row gap-8">
         <div className="flex-1">
           <div className="border border-gray-200 rounded-lg overflow-x-auto">
@@ -102,19 +107,21 @@ const Cart = () => {
               </div>
               <div className="flex justify-between">
                 <span>{t('shipping')}</span>
-                <span>{shippingUSD === 0 ? 'Free' : formatPrice(shippingUSD)}</span>
+                <span>{shipping === 0 ? 'Free' : formatPrice(shipping)}</span>
               </div>
               <div className="flex justify-between font-bold text-base border-t border-gray-300 pt-3">
                 <span>{t('total')}</span>
-                <span className="text-primary">{formatPrice(totalUSD)}</span>
+                <span className="text-primary">{formatPrice(grandTotal)}</span>
               </div>
-              <div className="pt-2 text-xs text-gray-500 text-right italic">
-                1 USD ≈ {currencyInfo.code === 'BDT' ? '৳119.50' : '$1.00'}
-              </div>
+              {shipping > 0 && (
+                <p className="text-xs text-gray-500 pt-1">
+                  Add {formatPrice(site.shipping.freeThreshold - total)} more to get free shipping.
+                </p>
+              )}
             </div>
             <Link
               to="/checkout"
-              className="block w-full text-center bg-primary text-white py-3 rounded-full font-pop text-sm font-semibold mt-6 hover:opacity-90"
+              className="block w-full text-center bg-primary text-white py-3 rounded-full font-pop text-sm font-semibold mt-6 hover:bg-primary-dark transition-colors"
             >
               {t('checkout')}
             </Link>

@@ -1,9 +1,11 @@
-import React, { useMemo, useState, useEffect } from 'react'
+import React, { useMemo, useState, useEffect, useCallback } from 'react'
 import { useSearchParams } from 'react-router'
 import { IoOptionsOutline } from 'react-icons/io5'
 import Container from '../components/layout/Container'
 import ProductCard from '../components/ProductCard'
 import FilterSidebar from '../components/FilterSidebar'
+import QuickViewModal from '../components/QuickViewModal'
+import { useSEO } from '../hooks/useSEO'
 import {
   categories,
   products,
@@ -42,6 +44,24 @@ const Shop = () => {
   const [sort, setSort] = useState('latest')
   const [saleOnly, setSaleOnly] = useState(urlSale)
   const [currentPage, setCurrentPage] = useState(1)
+  const [quickView, setQuickView] = useState(null)
+
+  const openQuickView = useCallback((product) => setQuickView(product), [])
+
+  const activeCategoryName = selectedCategories.length === 1
+    ? categories.find((c) => c.slug === selectedCategories[0])?.name
+    : null
+
+  useSEO({
+    title: search
+      ? `Search results for "${search}"`
+      : activeCategoryName
+        ? activeCategoryName
+        : 'Shop All Products',
+    description: activeCategoryName
+      ? `Browse our ${activeCategoryName} collection at FunGearBD. Genuine products, fast delivery across Bangladesh.`
+      : 'Browse headphones, smart watches, gaming gear and tech accessories at FunGearBD. Filter by category, price and rating.',
+  })
 
   useEffect(() => {
     if (urlCategory) setSelectedCategories([urlCategory])
@@ -88,7 +108,7 @@ const Shop = () => {
     list = list.filter((p) => p.price >= priceRange[0] && p.price <= priceRange[1])
 
     if (selectedRatings.length > 0) {
-      list = list.filter((p) => selectedRatings.some((r) => (p.rating || p.ratingCount) >= r))
+      list = list.filter((p) => selectedRatings.some((r) => (p.rating || 0) >= r))
     }
 
     if (selectedTags.length > 0) {
@@ -129,6 +149,7 @@ const Shop = () => {
     priceRange[1] !== priceBounds.max
 
   return (
+    <>
     <Container className="py-8 pb-16">
       {/* Toolbar */}
       <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-4 mb-8 font-pop">
@@ -136,7 +157,7 @@ const Shop = () => {
           <button
             type="button"
             onClick={() => setSidebarOpen(!sidebarOpen)}
-            className="inline-flex items-center gap-2 bg-primary text-white text-sm font-semibold px-5 py-2.5 rounded-full hover:bg-[#009606] transition-colors lg:hidden"
+            className="inline-flex items-center gap-2 bg-primary text-white text-sm font-semibold px-5 py-2.5 rounded-full hover:bg-primary-dark transition-colors lg:hidden"
           >
             <IoOptionsOutline size={18} />
             Filter
@@ -196,14 +217,11 @@ const Shop = () => {
               </div>
             )}
 
-            <div className="hidden lg:flex items-center gap-2 mb-6">
-              <button
-                type="button"
-                className="inline-flex items-center gap-2 bg-primary text-white text-sm font-semibold px-5 py-2.5 rounded-full"
-              >
-                <IoOptionsOutline size={18} />
-                Filter
-              </button>
+            <div className="hidden lg:flex items-center justify-between gap-2 mb-6">
+              <h2 className="font-pop font-bold text-lg text-gray-900 inline-flex items-center gap-2">
+                <IoOptionsOutline size={18} className="text-primary" />
+                Filters
+              </h2>
               {hasActiveFilters && (
                 <button
                   type="button"
@@ -296,12 +314,12 @@ const Shop = () => {
           {filtered.length === 0 ? (
             <div className="text-center py-20 font-pop">
               <p className="text-gray-500 text-lg mb-2">No products found for this filter.</p>
-              <p className="text-gray-400 text-sm mb-4">Filter change kore abar try korun, ba sob filter clear korun.</p>
+              <p className="text-gray-400 text-sm mb-4">Try adjusting your filters or clear them to see all products.</p>
               {hasActiveFilters && (
                 <button
                   type="button"
                   onClick={clearFilters}
-                  className="bg-primary text-white px-6 py-2.5 rounded-full font-semibold hover:bg-[#009606] transition-colors"
+                  className="bg-primary text-white px-6 py-2.5 rounded-full font-semibold hover:bg-primary-dark transition-colors"
                 >
                   Clear all filters
                 </button>
@@ -311,7 +329,7 @@ const Shop = () => {
             <>
               <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
                 {paginated.map((product) => (
-                  <ProductCard key={product.id} product={product} />
+                  <ProductCard key={product.id} product={product} onQuickView={openQuickView} />
                 ))}
               </div>
 
@@ -354,6 +372,11 @@ const Shop = () => {
         </div>
       </div>
     </Container>
+
+    {quickView && (
+      <QuickViewModal product={quickView} onClose={() => setQuickView(null)} />
+    )}
+    </>
   )
 }
 

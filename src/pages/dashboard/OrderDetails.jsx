@@ -2,10 +2,20 @@ import React from 'react'
 import { Link, useParams, Navigate } from 'react-router'
 import { useSelector } from 'react-redux'
 import { selectOrderById } from '../../slices/orderSlice'
+import { useFormatPrice } from '../../hooks/useFormatPrice'
+import { resolveProductImage } from '../../utils/productImage'
+
+const PAYMENT_LABELS = {
+  cod: 'Cash on Delivery',
+  bkash: 'bKash',
+  nagad: 'Nagad',
+  card: 'Card / Bank',
+}
 
 const OrderDetails = () => {
   const { id } = useParams()
   const order = useSelector(selectOrderById(id))
+  const formatPrice = useFormatPrice()
 
   if (!order) return <Navigate to="/dashboard/orders" replace />
 
@@ -31,36 +41,54 @@ const OrderDetails = () => {
             className="grid grid-cols-3 items-center p-4 border-t border-gray-200 font-pop text-sm"
           >
             <div className="flex items-center gap-3">
-              <img src={item.image} alt={item.name} className="w-12 h-12 object-contain" />
-              <span>{item.name}</span>
+              <img src={resolveProductImage(item)} alt={item.name} className="w-12 h-12 object-contain" />
+              <span className="line-clamp-2">{item.name}</span>
             </div>
             <span className="text-center">{item.qty}</span>
-            <span className="text-right font-semibold">${(item.price * item.qty).toFixed(2)}</span>
+            <span className="text-right font-semibold">{formatPrice(item.price * item.qty)}</span>
           </div>
         ))}
       </div>
 
       <div className="bg-gry p-6 rounded-lg max-w-sm ml-auto">
-        <div className="flex justify-between font-pop font-bold text-lg">
+        <div className="flex justify-between font-pop text-sm text-gray-600 mb-2">
+          <span>Subtotal</span>
+          <span>{formatPrice(order.subtotal ?? order.total)}</span>
+        </div>
+        {typeof order.shipping === 'number' && (
+          <div className="flex justify-between font-pop text-sm text-gray-600 mb-2">
+            <span>Shipping</span>
+            <span>{order.shipping === 0 ? 'Free' : formatPrice(order.shipping)}</span>
+          </div>
+        )}
+        <div className="flex justify-between font-pop font-bold text-lg border-t border-gray-300 pt-3">
           <span>Order Total</span>
-          <span className="text-primary">${order.total.toFixed(2)}</span>
+          <span className="text-primary">{formatPrice(order.total)}</span>
         </div>
       </div>
 
-      {order.shipping && (
-        <div className="mt-8">
-          <h3 className="font-pop font-semibold mb-3">Shipping Address</h3>
-          <p className="font-pop text-sm text-gray-600">
-            {order.shipping.firstName} {order.shipping.lastName}
-            <br />
-            {order.shipping.address}
-            <br />
-            {order.shipping.city}, {order.shipping.zip}
-            <br />
-            {order.shipping.email} · {order.shipping.phone}
-          </p>
-        </div>
-      )}
+      <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-6">
+        {order.shipping && typeof order.shipping === 'object' && (
+          <div>
+            <h3 className="font-pop font-semibold mb-3">Shipping Address</h3>
+            <p className="font-pop text-sm text-gray-600 leading-relaxed">
+              {order.shipping.firstName} {order.shipping.lastName}
+              <br />
+              {order.shipping.address}
+              <br />
+              {order.shipping.area ? `${order.shipping.area}, ` : ''}{order.shipping.city}
+              <br />
+              {order.shipping.email} · {order.shipping.phone}
+            </p>
+          </div>
+        )}
+        {order.payment && (
+          <div>
+            <h3 className="font-pop font-semibold mb-3">Payment Method</h3>
+            <p className="font-pop text-sm text-gray-600">{PAYMENT_LABELS[order.payment] || order.payment}</p>
+          </div>
+        )}
+      </div>
     </div>
   )
 }

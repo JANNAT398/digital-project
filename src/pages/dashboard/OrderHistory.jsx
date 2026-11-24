@@ -2,9 +2,11 @@ import React from 'react'
 import { Link } from 'react-router'
 import { useSelector } from 'react-redux'
 import { selectOrders } from '../../slices/orderSlice'
+import { useFormatPrice } from '../../hooks/useFormatPrice'
 
 const OrderHistory = () => {
   const orders = useSelector(selectOrders)
+  const formatPrice = useFormatPrice()
 
   if (orders.length === 0) {
     return (
@@ -37,7 +39,7 @@ const OrderHistory = () => {
             <span className="font-semibold text-primary">{order.id}</span>
             <span>{order.date}</span>
             <span>{order.status}</span>
-            <span className="text-right font-bold">${order.total.toFixed(2)}</span>
+            <span className="text-right font-bold">{formatPrice(order.total)}</span>
           </Link>
         ))}
       </div>

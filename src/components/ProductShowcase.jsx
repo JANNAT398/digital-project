@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import { Link } from 'react-router'
 import Container from './layout/Container'
 import ProductCard from '../components/ProductCard'
-import fruit from '../assets/images/fruit.webp'
 import { useTranslation } from '../hooks/useTranslation'
 
 const ProductShowcase = ({ allData, title, isCategory, viewAllLink }) => {
@@ -27,7 +26,7 @@ const ProductShowcase = ({ allData, title, isCategory, viewAllLink }) => {
         {viewAllLink && isCategory ? (
           <Link
             to={viewAllLink}
-            className="text-green-600 font-semibold font-pop hover:underline text-sm sm:text-base lg:text-lg shrink-0"
+            className="text-primary font-semibold font-pop hover:underline text-sm sm:text-base lg:text-lg shrink-0"
           >
             {t('viewAll')}
           </Link>
@@ -35,7 +34,7 @@ const ProductShowcase = ({ allData, title, isCategory, viewAllLink }) => {
           <button
             type="button"
             onClick={handleViewAllClick}
-            className="text-green-600 font-semibold font-pop hover:underline text-sm sm:text-base lg:text-lg shrink-0 cursor-pointer"
+            className="text-primary font-semibold font-pop hover:underline text-sm sm:text-base lg:text-lg shrink-0 cursor-pointer"
           >
             {showAll ? (t('previous') + ' ←') : t('viewAll')}
           </button>
@@ -57,7 +56,7 @@ const ProductShowcase = ({ allData, title, isCategory, viewAllLink }) => {
               >
                 <div className="w-full h-28 sm:h-32 md:h-36 flex items-center justify-center mb-2 sm:mb-3 overflow-hidden">
                   <img
-                    src={item.image || fruit}
+                    src={item.image}
                     alt={item.name}
                     className="max-h-full max-w-full object-contain transition-transform duration-300 group-hover:scale-105"
                   />

@@ -1,8 +1,7 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router'
-import { FaChevronDown, FaChevronUp, FaStar } from 'react-icons/fa'
+import { FaChevronDown, FaChevronUp, FaStar, FaBolt } from 'react-icons/fa'
 import PriceRangeSlider from './PriceRangeSlider'
-import discountBanner from '../assets/images/discountbanner.webp'
 import { useFormatPrice } from '../hooks/useFormatPrice'
 
 const FilterSection = ({ title, defaultOpen = true, children }) => {
@@ -132,13 +131,20 @@ const FilterSidebar = ({
         </div>
       </FilterSection>
 
-      <div className="relative overflow-hidden rounded-xl mt-6 mb-6 min-h-[180px]">
-        <img src={discountBanner} alt="Sale banner" className="absolute inset-0 w-full h-full object-cover" />
-        <div className="relative z-10 p-5 flex flex-col justify-end h-full min-h-[180px] bg-gradient-to-t from-black/70 to-transparent">
-          <span className="text-white/80 text-xs font-medium uppercase tracking-wider">79% Discount</span>
-          <p className="text-white font-bold text-lg mt-1 leading-tight">Fresh produce on sale</p>
-          <Link to="/shop" className="text-primary text-sm font-semibold mt-2 hover:underline">
-            Shop now →
+      <div className="relative overflow-hidden rounded-xl mt-6 mb-6 bg-primary text-white p-5">
+        <div className="absolute -right-6 -top-6 w-24 h-24 rounded-full bg-accent/20" aria-hidden="true" />
+        <div className="absolute -right-2 -bottom-4 w-16 h-16 rounded-full bg-accent/10" aria-hidden="true" />
+        <div className="relative z-10">
+          <span className="inline-flex items-center gap-1 text-accent text-xs font-semibold uppercase tracking-wider">
+            <FaBolt size={12} /> Hot Deals
+          </span>
+          <p className="font-bold text-lg mt-2 leading-tight">Up to 40% off tech &amp; gaming gear</p>
+          <p className="text-white/70 text-xs mt-1">Limited-time offers on selected items.</p>
+          <Link
+            to="/shop?sale=true"
+            className="inline-block bg-accent text-primary text-sm font-semibold mt-3 px-4 py-2 rounded-full hover:bg-accent-dark transition-colors"
+          >
+            Shop deals →
           </Link>
         </div>
       </div>

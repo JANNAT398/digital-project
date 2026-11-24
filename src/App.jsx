@@ -16,6 +16,9 @@ import Checkout from './pages/Checkout'
 import Wishlist from './pages/Wishlist'
 import About from './pages/About'
 import Contact from './pages/Contact'
+import PrivacyPolicy from './pages/PrivacyPolicy'
+import Terms from './pages/Terms'
+import ReturnRefund from './pages/ReturnRefund'
 import BlogList from './pages/BlogList'
 import SingleBlog from './pages/SingleBlog'
 import Otp from './pages/Otp'
@@ -45,6 +48,9 @@ const App = () => {
         <Route path="/wishlist" element={<Wishlist />} />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
+        <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+        <Route path="/terms" element={<Terms />} />
+        <Route path="/return-refund" element={<ReturnRefund />} />
         <Route path="/blog" element={<BlogList />} />
         <Route path="/blog/:id" element={<SingleBlog />} />
         <Route path="/dashboard" element={<DashboardLayout />}>

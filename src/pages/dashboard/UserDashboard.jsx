@@ -5,12 +5,14 @@ import { selectUser } from '../../slices/authSlice'
 import { selectOrders } from '../../slices/orderSlice'
 import { selectCartCount } from '../../slices/cartSlice'
 import { selectWishlistCount } from '../../slices/wishlistSlice'
+import { useFormatPrice } from '../../hooks/useFormatPrice'
 
 const UserDashboard = () => {
   const user = useSelector(selectUser)
   const orders = useSelector(selectOrders)
   const cartCount = useSelector(selectCartCount)
   const wishlistCount = useSelector(selectWishlistCount)
+  const formatPrice = useFormatPrice()
 
   return (
     <div>
@@ -50,7 +52,7 @@ const UserDashboard = () => {
                 <p className="font-pop text-sm text-gray-500">{order.date}</p>
               </div>
               <div className="text-right">
-                <p className="font-pop font-bold text-primary">${order.total.toFixed(2)}</p>
+                <p className="font-pop font-bold text-primary">{formatPrice(order.total)}</p>
                 <p className="font-pop text-sm text-gray-500">{order.status}</p>
               </div>
             </Link>

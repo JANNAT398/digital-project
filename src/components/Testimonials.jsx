@@ -1,169 +1,93 @@
 import React from 'react'
 import Container from '../components/layout/Container'
-import { BiSolidQuoteAltRight } from "react-icons/bi";
-import { Swiper, SwiperSlide } from 'swiper/react';
-import 'swiper/css';
-import 'swiper/css/scrollbar';
-import { Navigation, Autoplay } from 'swiper/modules';
-import review1 from '../assets/images/review1.webp'
-import review2 from '../assets/images/review2.webp'
-import review3 from '../assets/images/review3.webp'
-import { FaArrowLeft, FaArrowRight, FaStar } from 'react-icons/fa';
+import SectionHeader from './home/SectionHeader'
+import { BiSolidQuoteAltRight } from 'react-icons/bi'
+import { Swiper, SwiperSlide } from 'swiper/react'
+import 'swiper/css'
+import { Navigation, Autoplay } from 'swiper/modules'
+import { FaArrowLeft, FaArrowRight, FaStar } from 'react-icons/fa'
 
+const testimonials = [
+  {
+    name: 'Tanvir Ahmed',
+    role: 'Dhaka',
+    initials: 'TA',
+    text: 'Ordered a pair of headphones and a power bank. Both were 100% genuine and delivery took only two days across Dhaka. Customer support on WhatsApp was super responsive.',
+  },
+  {
+    name: 'Nusrat Jahan',
+    role: 'Chattogram',
+    initials: 'NJ',
+    text: 'The smartwatch I bought works perfectly and the packaging was really secure. Prices are competitive and the return policy gave me confidence to order.',
+  },
+  {
+    name: 'Rakib Hasan',
+    role: 'Sylhet',
+    initials: 'RH',
+    text: 'Best online gadget shop I have used in Bangladesh. Genuine products, honest pricing and they actually answer your questions before you buy.',
+  },
+  {
+    name: 'Sadia Islam',
+    role: 'Rajshahi',
+    initials: 'SI',
+    text: 'I have ordered three times now — gaming mouse, keyboard and earbuds. Every single product matched the description. Highly recommended for tech lovers.',
+  },
+]
 
 const Testimonials = () => {
-    let slider1 = {
-        spaceBetween: 24,
-        slidesPerView: 1,
-        navigation: {
-            prevEl: ".prevarrow",
-            nextEl: ".nextarrow",
-        },
-        breakpoints: {
-            769: {
-                slidesPerView: 3,
-            },
-        },
-        loop: true,
-        autoplay: {
-            delay: 1000,
-            disableOnInteraction: false,
-        },
-        modules: [Navigation, Autoplay],
-    }
-    return (
-        <div className="w-full bg-gray-50 py-15">
-            <Container>
-                <div className="flex justify-between items-center mb-8">
-                    <h2 className="text-xl lg:text-3xl font-semibold">Client Testimonial</h2>
+  const slider = {
+    spaceBetween: 24,
+    slidesPerView: 1,
+    navigation: { prevEl: '.prevarrow', nextEl: '.nextarrow' },
+    breakpoints: { 769: { slidesPerView: 2 }, 1100: { slidesPerView: 3 } },
+    loop: true,
+    autoplay: { delay: 5000, disableOnInteraction: false },
+    modules: [Navigation, Autoplay],
+  }
 
-                    <div className="flex gap-3">
-                        <button className="prevarrow w-8 h-8 lg:w-10 lg:h-10 rounded-full border border-gray-200 flex items-center justify-center text-primary hover:bg-primary hover:text-white hover:border-primary transition-all duration-300">
-                            <FaArrowLeft />
-                        </button>
+  return (
+    <section className="bg-gry py-12 sm:py-16">
+      <Container>
+        <SectionHeader
+          eyebrow="Customer stories"
+          title="What Our Customers Say"
+          subtitle="Trusted by thousands of tech lovers across Bangladesh."
+        />
 
-                        <button className="nextarrow w-8 h-8 lg:w-10 lg:h-10 rounded-full border border-gray-200 flex items-center justify-center text-primary hover:bg-primary hover:text-white hover:border-primary transition-all duration-300">
-                            <FaArrowRight />
-                        </button>
-                    </div>
-                </div>
-                <Swiper {...slider1} >
-                    <SwiperSlide>
-                        <div className="bg-white w-100 p-6 rounded-lg">
-                            <div>
-                                <BiSolidQuoteAltRight className="text-3xl text-primary" />
-                            </div>
-                            <div className="py-4 pr-4">
-                                <p className="text-lg text-gray-700">Pellentesque eu nibh eget mauris congue mattis mattis nec tellus. Phasellus imperdiet elit eu magna dictum, bibendum cursus velit sodales. Donec sed neque eget</p>
-                            </div>
-                            <div className="flex items-center justify-between">
-                                <div className="flex items-center">
-                                    <div className="pr-1">
-                                        <img src={review1} alt="review1" />
-                                    </div>
-                                    <div>
-                                        <h4 className="text-base text-gray-900">Robert Fox</h4>
-                                        <p className="text-lg text-gray-400">Customer</p>
-                                    </div>
-                                </div>
-                                <div className="flex">
-                                    <FaStar className="text-yellow-400" />
-                                    <FaStar className="text-yellow-400" />
-                                    <FaStar className="text-yellow-400" />
-                                    <FaStar className="text-yellow-400" />
-                                    <FaStar className="text-yellow-400" />
-                                </div>
-                            </div>
-                        </div>
-                    </SwiperSlide>
-                    <SwiperSlide>
-                        <div className="bg-white w-100 p-6 rounded-lg">
-                            <div>
-                                <BiSolidQuoteAltRight className="text-3xl text-primary" />
-                            </div>
-                            <div className="py-4 pr-4">
-                                <p className="text-lg text-gray-700">Pellentesque eu nibh eget mauris congue mattis mattis nec tellus. Phasellus imperdiet elit eu magna dictum, bibendum cursus velit sodales. Donec sed neque eget</p>
-                            </div>
-                            <div className="flex items-center justify-between">
-                                <div className="flex items-center">
-                                    <div className="pr-1">
-                                        <img src={review2} alt="review2" />
-                                    </div>
-                                    <div>
-                                        <h4 className="text-base text-gray-900">Dianne Russell</h4>
-                                        <p className="text-lg text-gray-400">Customer</p>
-                                    </div>
-                                </div>
-                                <div className="flex">
-                                    <FaStar className="text-yellow-400" />
-                                    <FaStar className="text-yellow-400" />
-                                    <FaStar className="text-yellow-400" />
-                                    <FaStar className="text-yellow-400" />
-                                    <FaStar className="text-yellow-400" />
-                                </div>
-                            </div>
-                        </div>
-                    </SwiperSlide>
-                    <SwiperSlide>
-                        <div className="bg-white w-100 p-6 rounded-lg">
-                            <div>
-                                <BiSolidQuoteAltRight className="text-3xl text-primary" />
-                            </div>
-                            <div className="py-4 pr-4">
-                                <p className="text-lg text-gray-700">Pellentesque eu nibh eget mauris congue mattis mattis nec tellus. Phasellus imperdiet elit eu magna dictum, bibendum cursus velit sodales. Donec sed neque eget</p>
-                            </div>
-                            <div className="flex items-center justify-between">
-                                <div className="flex items-center">
-                                    <div className="pr-1">
-                                        <img src={review3} alt="review3" />
-                                    </div>
-                                    <div>
-                                        <h4 className="text-base text-gray-900">Eleanor Pena</h4>
-                                        <p className="text-lg text-gray-400">Customer</p>
-                                    </div>
-                                </div>
-                                <div className="flex">
-                                    <FaStar className="text-yellow-400" />
-                                    <FaStar className="text-yellow-400" />
-                                    <FaStar className="text-yellow-400" />
-                                    <FaStar className="text-yellow-400" />
-                                    <FaStar className="text-yellow-400" />
-                                </div>
-                            </div>
-                        </div>
-                    </SwiperSlide>
-                    <SwiperSlide>
-                        <div className="bg-white w-100 p-6 rounded-lg">
-                            <div>
-                                <BiSolidQuoteAltRight className="text-3xl text-primary" />
-                            </div>
-                            <div className="py-4 pr-4">
-                                <p className="text-lg text-gray-700">Pellentesque eu nibh eget mauris congue mattis mattis nec tellus. Phasellus imperdiet elit eu magna dictum, bibendum cursus velit sodales. Donec sed neque eget</p>
-                            </div>
-                            <div className="flex items-center justify-between">
-                                <div className="flex items-center">
-                                    <div className="pr-1">
-                                        <img src={review1} alt="review1" />
-                                    </div>
-                                    <div>
-                                        <h4 className="text-base text-gray-900">Robert Fox</h4>
-                                        <p className="text-lg text-gray-400">Customer</p>
-                                    </div>
-                                </div>
-                                <div className="flex">
-                                    <FaStar className="text-yellow-400" />
-                                    <FaStar className="text-yellow-400" />
-                                    <FaStar className="text-yellow-400" />
-                                    <FaStar className="text-yellow-400" />
-                                    <FaStar className="text-yellow-400" />
-                                </div>
-                            </div>
-                        </div>
-                    </SwiperSlide>
-                </Swiper>
-            </Container>
+        <div className="flex justify-end gap-3 -mt-14 mb-8">
+          <button aria-label="Previous testimonial" className="prevarrow w-10 h-10 rounded-full border border-gray-300 bg-white flex items-center justify-center text-primary hover:bg-primary hover:text-white hover:border-primary transition-all duration-300">
+            <FaArrowLeft className="text-sm" />
+          </button>
+          <button aria-label="Next testimonial" className="nextarrow w-10 h-10 rounded-full border border-gray-300 bg-white flex items-center justify-center text-primary hover:bg-primary hover:text-white hover:border-primary transition-all duration-300">
+            <FaArrowRight className="text-sm" />
+          </button>
         </div>
-    )
+
+        <Swiper {...slider}>
+          {testimonials.map((t) => (
+            <SwiperSlide key={t.name} className="h-auto">
+              <div className="bg-white rounded-xl p-6 h-full flex flex-col border border-gray-100">
+                <BiSolidQuoteAltRight className="text-3xl text-accent" />
+                <div className="flex text-amber-400 gap-0.5 mt-4">
+                  {[...Array(5)].map((_, i) => <FaStar key={i} size={13} />)}
+                </div>
+                <p className="font-pop text-sm text-gray-600 leading-relaxed my-4 flex-1">“{t.text}”</p>
+                <div className="flex items-center gap-3 pt-4 border-t border-gray-100">
+                  <span className="w-11 h-11 rounded-full bg-primary text-accent font-pop font-bold flex items-center justify-center">
+                    {t.initials}
+                  </span>
+                  <span>
+                    <span className="block font-pop font-semibold text-sm text-gray-900">{t.name}</span>
+                    <span className="block font-pop text-xs text-gray-400">Verified buyer · {t.role}</span>
+                  </span>
+                </div>
+              </div>
+            </SwiperSlide>
+          ))}
+        </Swiper>
+      </Container>
+    </section>
+  )
 }
 
 export default Testimonials
